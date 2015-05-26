@@ -1,16 +1,14 @@
-/*global tx*/
-tx.directive("document", function () {
-    'use strict';
-    return {
+tx.directive("document", function() {
+    return{
         restrict: "EA",
         templateUrl: "templates/document.html",
         scope: {
             doc: '=',
             data: '='
         },
-        link: function (scope, elem, attrs) {
+        link: function(scope, elem, attrs){
             
         }
-    };
+    }
 });
              

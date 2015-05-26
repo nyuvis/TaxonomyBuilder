@@ -6,10 +6,12 @@ txServices.factory('db', function (esFactory) {
     var self = {};
 
     self.params = function (params) {
-        for (var p in params){
+        console.log(params);
+        Object.keys(params).forEach(function (p) {
             self[p] = params[p];
-        }
-    }
+        });
+      
+    };
     
     self.client = function () {
         if (self._client) {
@@ -32,34 +34,74 @@ txServices.factory('db', function (esFactory) {
     };
     
     self.getKeyWords = function (query, exclude) {
-        var exclude = "@.*|_link|";
+        exclude = exclude || "";
+        exclude += "@.*|_link|";
+        exclude += self.getWordsFromQuery(query).join("|");
+        console.log(exclude);
         var q = {
-            "fields": ["text"], 
+            "fields": ["text"],
             "query": {
                 "query_string": {
-                      "default_field": "text",
-                      "query": "text: " + query
-                    }
-                }, 
-            "highlight": {"fields": {"text": {}}}, 
+                    "default_field": "text",
+                    "query": query,
+                    default_operator: "AND" 
+                }
+            },
+            "highlight": {"fields": {"text": {}}},
             "aggs": {
                 "NAME": {
-                  "significant_terms": {
-                    "field": "text",
-                    "size": 100,
-                    "exclude": exclude,
-                      "gnd": {}
-                  }
+                    "significant_terms": {
+                        "field": "text",
+                        "size": 100,
+                        "exclude": exclude,
+                        "gnd": {}
+                    }
                 }
             }
-        }
+        };
         
         return self.client().search({
-          index: self.index,
-          type: self.type,
-          size: 50,
-          body: q
+            index: self.index,
+            type: self.type,
+            size: 200,
+            body: q
         });
+    };
+    
+    self.getDocuments = function (query) {
+        var q = {
+            "fields": ["text"],
+            "query": {
+                "query_string": {
+                    "default_field": "text",
+                    "query": query,
+                    default_operator: "AND" 
+                }
+            },
+            "highlight": {"fields": {"text": {}}}
+        };
+        
+        return self.client().search({
+            index: self.index,
+            type: self.type,
+            size: 200,
+            body: q
+        });
+    };
+    
+    self.getWordsFromQuery = function (query) {
+        var ignore = ["and", "or", "not"],
+            replace = ["+", "-", "~"],
+            result = [];
+        
+        query = query.toLowerCase();
+        query.split(' ').forEach(function (word) {
+            word = word.replace(/\+|\-|\~|\"/i, "");
+            if (ignore.indexOf(word) === -1) {
+                result.push(word);
+            }
+        });
+        return result;
     };
     
     return self;
