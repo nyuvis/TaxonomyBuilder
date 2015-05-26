@@ -1,6 +1,6 @@
 @shadow: #ccc;
 @Primary: #489BD5;
-@PrimaryL: #C1DDF1;
+@PrimaryL: hsl(205, 63%, 90%);
 @Secondary: #B3D548; 
 @Third: #FF9203;
 @Forth: #FF1E22;
@@ -113,14 +113,19 @@ input{
     border: solid 1px #ccc;
     color: #555;
     font-size: 14px;
-    overflow-x: auto;
+    
     em{
         font-weight: bold;
     }
     ul{
+        overflow: auto;
         margin: 0px;
         padding: 0px;
         list-style: none;
+        position: absolute;
+        bottom: 0px;
+        top: 28px;
+        
         li{
             padding: 5px 5px 10px 10px;
             border-bottom: solid 1px #ccc;
@@ -135,12 +140,44 @@ input{
         li:nth-of-type(odd){
            
         }
+        
+    }
+    .tab{
+        position: absolute;
+        z-index: 2;
+        background-color: white;
+        
+        right: 0px;
+        left: 0px;
+        
+        button{
+            border-radius: 0px;
+            background-color: #eee;
+            color: #000;
+            border: solid 1px #ccc;
+        }
+        button:hover{
+            background-color: #ccc;
+        }
+        .selected{
+            background-color: @Primary;
+            color: #fff;
+            font-weight: bold;
+            box-shadow: 0px 0px 5px 1px #ccc;
+            border: solid 1px @Primary;
+        }
+        .selected:hover{
+            background-color: @Primary;
+        }
+        border-bottom: solid 3px @Primary;
+        padding: 5px 5px 0px 5px;
+        overflow: hidden;
     }
 }
 
 #keywords{
     position: fixed;
-    left: 0px;
+    left: 150px;
     top: 55px;
     bottom: 0px;
     right: 300px;
@@ -154,6 +191,68 @@ input{
     li{
         float: left;
         margin-left: 5px;
+        cursor: pointer;
+    }
+    li:hover{
+        box-shadow: 2px 2px 5px #ccc ;
+        border: solid 1px #ccc;
+        margin-left: 3px;
+        margin-top: -2px;
+    }
+    .selected{
+        transition: all 0.2s;
+        box-shadow: 2px 2px 5px #ccc ;
+        background-color: #fafaff;
+        border: solid 1px @Primary;
+        margin-left: 3px;
+        margin-top: -2px;
+    }
+}
+
+#pool{
+    position: fixed;
+    left: 0px;
+    top: 55px;
+    bottom: 0px;
+    width: 150px;
+    border-right: solid 1px #ccc;
+    ul{
+        padding: 0px;
+        margin: 0px;
+        list-style: none;
+    }
+    
+    .title{
+        background-color: @Primary;
+        color: white;
+        font-size: 14px;
+        padding: 5px;
+        margin-bottom: 2px;
+    }
+    .title-over{
+        background-color: @Third;
+    }
+    li{
+        font-size: 12px;
+        padding: 3px;
+        cursor: pointer;
+         i{
+            position: absolute;
+            right: 5px;
+            color: @Red;
+            display: none;
+            
+        }
+       
+    }
+    li:hover{
+        background-color: @PrimaryL;
+        i{
+            display: inline;
+        }
+    }
+    .title:hover{
+        background-color: @Primary;
     }
 }
 

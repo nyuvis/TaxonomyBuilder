@@ -99,15 +99,18 @@ input {
   border: solid 1px #ccc;
   color: #555;
   font-size: 14px;
-  overflow-x: auto;
 }
 #documents em {
   font-weight: bold;
 }
 #documents ul {
+  overflow: auto;
   margin: 0px;
   padding: 0px;
   list-style: none;
+  position: absolute;
+  bottom: 0px;
+  top: 28px;
 }
 #documents ul li {
   padding: 5px 5px 10px 10px;
@@ -120,9 +123,38 @@ input {
   border-left: solid 5px #489bd5;
   padding: 5px 5px 10px 5px;
 }
+#documents .tab {
+  position: absolute;
+  z-index: 2;
+  background-color: white;
+  right: 0px;
+  left: 0px;
+  border-bottom: solid 3px #489bd5;
+  padding: 5px 5px 0px 5px;
+  overflow: hidden;
+}
+#documents .tab button {
+  border-radius: 0px;
+  background-color: #eee;
+  color: #000;
+  border: solid 1px #ccc;
+}
+#documents .tab button:hover {
+  background-color: #ccc;
+}
+#documents .tab .selected {
+  background-color: #489bd5;
+  color: #fff;
+  font-weight: bold;
+  box-shadow: 0px 0px 5px 1px #ccc;
+  border: solid 1px #489bd5;
+}
+#documents .tab .selected:hover {
+  background-color: #489bd5;
+}
 #keywords {
   position: fixed;
-  left: 0px;
+  left: 150px;
   top: 55px;
   bottom: 0px;
   right: 300px;
@@ -136,6 +168,64 @@ input {
 #keywords li {
   float: left;
   margin-left: 5px;
+  cursor: pointer;
+}
+#keywords li:hover {
+  box-shadow: 2px 2px 5px #ccc ;
+  border: solid 1px #ccc;
+  margin-left: 3px;
+  margin-top: -2px;
+}
+#keywords .selected {
+  transition: all 0.2s;
+  box-shadow: 2px 2px 5px #ccc ;
+  background-color: #fafaff;
+  border: solid 1px #489bd5;
+  margin-left: 3px;
+  margin-top: -2px;
+}
+#pool {
+  position: fixed;
+  left: 0px;
+  top: 55px;
+  bottom: 0px;
+  width: 150px;
+  border-right: solid 1px #ccc;
+}
+#pool ul {
+  padding: 0px;
+  margin: 0px;
+  list-style: none;
+}
+#pool .title {
+  background-color: #489bd5;
+  color: white;
+  font-size: 14px;
+  padding: 5px;
+  margin-bottom: 2px;
+}
+#pool .title-over {
+  background-color: #ff9203;
+}
+#pool li {
+  font-size: 12px;
+  padding: 3px;
+  cursor: pointer;
+}
+#pool li i {
+  position: absolute;
+  right: 5px;
+  color: #d05a16;
+  display: none;
+}
+#pool li:hover {
+  background-color: #d5e8f6;
+}
+#pool li:hover i {
+  display: inline;
+}
+#pool .title:hover {
+  background-color: #489bd5;
 }
 #footer {
   position: fixed;

@@ -10,17 +10,22 @@
     <link href='http://fonts.googleapis.com/css?family=Quicksand:300,400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/glyphs.css">
+    
     <script src="vendors/angular.min.js"></script>
     <script src="vendors/angular-resource.min.js"></script>
     <script src="vendors/angular-route.min.js"></script>
     <script src="vendors/angular-sanitize.min.js"></script>
     <script src="vendors/elasticsearch.angular.min.js"></script>
     <script src="vendors/venn.js"></script>
+    <script src="vendors/Autolinker.min.js"></script>
+    <script src="vendors/d3.min.js"></script>
+    
+    <script src="js/polyfills.js"></script>
     <script src="js/srv.js"></script>
     <script src="js/main.js"></script>
     <script src="js/document.js"></script>
     <script src="js/keyword.js"></script>
-    <script src="vendors/d3.min.js"></script>
+    
 </head>
 <body ng-controller="txCtrl" ng-init="init()">
     <div id="MainSearch" ng-class="{colapsed: data.keywords}">
@@ -32,20 +37,59 @@
         <div class="paramters" ng-show="data.keywords">
             <label>Glyph: </label>
             <select ng-model="selectedGlyph" ng-options="op for op in glyphs"></select>
+            
+            <label>Sort: </label>
+            <select ng-model="sortKeywords">
+                <option value="doc_count">Foreground</option>
+                <option value="bg_count">Backgorung</option>
+                <option value="score">Relevance</option>
+            </select>
+            
+            <label>Data: </label>
+            <select ng-model="index" ng-options="i.desc for i in indices"></select>
         </div>
     </div>
     <div id="documents">
-        <ul>
+        <div class="tab">
+            <button ng-click="showDocs = 'Selected'" ng-class="{selected: showDocs == 'Selected'}">Word ({{data.stats.selCount}})</button>
+            <button ng-click="showDocs = 'SelectedTopic'" ng-class="{selected: showDocs == 'SelectedTopic'}">Word + Topic ({{data.stats.selTopicCount}})</button>
+            <button ng-click="showDocs = 'Topic'" ng-class="{selected: showDocs == 'Topic'}">Topic ({{data.stats.count}})</button>
+            
+        </div>
+        <ul ng-show="showDocs == 'Topic'">
             <li ng-repeat="document in data.topicDocuments">
                 <document doc="document" data="data"></document>
             </li>
         </ul>
+        <ul ng-show="showDocs == 'Selected'">
+            <li ng-repeat="document in data.selectedDocuments">
+                <document doc="document" data="data"></document>
+            </li>
+        </ul>
+        <ul  ng-show="showDocs == 'SelectedTopic'">
+            <li ng-repeat="document in data.selectedTopicDocuments">
+                <document doc="document" data="data"></document>
+            </li>
+        </ul>
+        
     </div>
     <div id="keywords">
         <ul>
-            <li ng-repeat="keyword in data.keywords">
+            <li ng-repeat="keyword in data.keywords | orderBy:'-'+sortKeywords" tx-drag="keyword" ng-click="select(keyword)" ng-class="{selected: keyword.key === state.selected.key}">
                 <keyword word="keyword" data="data" glyph="selectedGlyph"></keyword>
             </li>
+        </ul>
+    </div>
+    <div id="pool">
+        <ul tx-drop="addToPool">
+            <li class="title">Interesting</li>
+            <li ng-repeat="word in state.pool">{{word}} <i ng-click="removeWord(word, state.pool)" class="fa fa-trash-o"></i></li>
+            
+        </ul>
+        <ul tx-drop="ignoreWord">
+            <li class="title">Ignore</li>
+            <li ng-repeat="word in state.ignored" class="poolItem">{{word}} <i ng-click="removeWord(word, state.ignored)" class="fa fa-trash-o"></i></li>
+            
         </ul>
     </div>
     <div id="footer" ng-hide="data.keywords">
