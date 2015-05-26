@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html ng-app="tx">
+<head>
+    <title>Taxonomy</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <link rel="shortcut icon" href="img/favico.png" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link href='http://fonts.googleapis.com/css?family=Quicksand:300,400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/glyphs.css">
+    <script src="vendors/angular.min.js"></script>
+    <script src="vendors/angular-resource.min.js"></script>
+    <script src="vendors/angular-route.min.js"></script>
+    <script src="vendors/angular-sanitize.min.js"></script>
+    <script src="vendors/elasticsearch.angular.min.js"></script>
+    <script src="vendors/venn.js"></script>
+    <script src="js/srv.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/document.js"></script>
+    <script src="js/keyword.js"></script>
+    <script src="vendors/d3.min.js"></script>
+</head>
+<body ng-controller="txCtrl" ng-init="init()">
+    <div id="MainSearch" ng-class="{colapsed: data.keywords}">
+        <img src="img/favico.png">
+        <h1>Taxonomy</h1>
+        
+        <input ng-enter="doSearch()" type="search" ng-model="state.query" placeholder="Type your topic">
+        <button ng-click="doSearch()">GO</button>
+        <div class="paramters" ng-show="data.keywords">
+            <label>Glyph: </label>
+            <select ng-model="selectedGlyph" ng-options="op for op in glyphs"></select>
+        </div>
+    </div>
+    <div id="documents">
+        <ul>
+            <li ng-repeat="document in data.topicDocuments">
+                <document doc="document" data="data"></document>
+            </li>
+        </ul>
+    </div>
+    <div id="keywords">
+        <ul>
+            <li ng-repeat="keyword in data.keywords">
+                <keyword word="keyword" data="data" glyph="selectedGlyph"></keyword>
+            </li>
+        </ul>
+    </div>
+    <div id="footer" ng-hide="data.keywords">
+            Taxonomy Builder - NYU | Polytechnic School of Engineering - <a href="https://github.com/nyuvis/TaxonomyBuilder">GitHub</a>
+    </div>
+</body>
+</html>
