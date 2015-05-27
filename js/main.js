@@ -135,8 +135,8 @@ tx.controller('txCtrl', function ($scope, db) {
             type: "status"
         });
         
-        state.query = 'violence';
-        $scope.doSearch();
+        //state.query = 'violence';
+        //$scope.doSearch();
     };
 });
 
