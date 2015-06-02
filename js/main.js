@@ -6,8 +6,8 @@ var tx = angular.module('tx', ['ngSanitize', 'txServices']);
 tx.controller('txCtrl', function ($scope, db) {
     'use strict';
     /*Paramters----------------------------------------*/
-    $scope.glyphs = ["wordGlyph", "vennGlyph", "paralelBar", "horizontalBar", "slider", "smallVennGlyph", "slider2"];
-    $scope.selectedGlyph = $scope.glyphs[6];
+    $scope.glyphs = ["wordGlyph", "vennGlyph", "paralelBar", "horizontalBar", "slider", "smallVennGlyph", "slider2", "square", "rectangle"];
+    $scope.selectedGlyph = $scope.glyphs[8];
     
     /*Defaults */
     $scope.sortKeywords = 'score';

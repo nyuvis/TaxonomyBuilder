@@ -33,6 +33,18 @@
   height: 60px;
   text-align: center;
 }
+.glyp_square {
+  width: 150px;
+  overflow: hidden;
+  height: 120px;
+  text-align: center;
+}
+.glyp_rectangle {
+  width: 150px;
+  overflow: hidden;
+  height: 70px;
+  text-align: center;
+}
 .glyp_smallVennGlyph {
   width: 115px;
   overflow: hidden;

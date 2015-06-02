@@ -31,7 +31,14 @@ tx.directive("keyword", function () {
 
 function wordGlyph(element, li, word, data) {
     'use strict';
-    element.text(word.key);
+    var max = Math.max(data.stats.count, data.stats.maxBg_count),
+        sizeScale = d3.scale.linear().range([14, 40]).domain([1, max]),
+        inColorScale = d3.scale.linear().range([primary, "#c9c986", "#d7191c", "#d7191c"]).domain([0, 0.05, 0.80, 1]),
+        propTopic = word.doc_count / data.stats.count;
+    element.text(word.key).style({
+        "font-size": sizeScale(word.bg_count) + "px",
+        color: inColorScale(propTopic)
+    });
 }
              
 function vennGlyph(element, li, word, data) {
@@ -414,9 +421,130 @@ function slider2(element, li, word, data) {
         .attr("fill", "#FF9203");
 }
 
+function square(element, li, word, data) {
+    'use strict';
+    var width = 140,
+        height = width - 50,
+    
+        propInside = word.doc_count / word.bg_count,
+        propTopic = word.doc_count / data.stats.count,
 
+        inScale = d3.scale.linear().range([1, width]).domain([0, 1]),
+        inColorScale = d3.scale.linear().range(["#d7191c", "#ffffbf", primary]).domain([0, 0.1, 1]),
+        
+        outScale = d3.scale.linear().range([1, width]).domain([1, word.bg_count]),
+        max = Math.max(data.stats.count, data.stats.maxBg_count),
+        
+        tpScale = d3.scale.linear().range([1, (width * width) / 4]).domain([0, max]),
+        label,
 
+        
+        glyph = element.append("svg")
+            .attr("width", width)
+            .attr("height", height);
+    
+    glyph.append("rect")
+        .attr("height", Math.sqrt(tpScale(word.bg_count)))
+        .attr("width", Math.sqrt(tpScale(word.bg_count)))
+        .attr("x", (width - Math.sqrt(tpScale(word.bg_count))) / 2)
+        .attr("y", height - Math.sqrt(tpScale(word.bg_count)))
+        .attr("stroke", "#ccc")
+        .attr("fill", inColorScale(propTopic));
 
+    glyph.append("rect")
+        .attr("height", Math.sqrt(tpScale(word.doc_count)))
+        .attr("width", Math.sqrt(tpScale(word.doc_count)))
+        .attr("x", (width - Math.sqrt(tpScale(word.doc_count))) / 2)
+        .attr("y", height - Math.sqrt(tpScale(word.bg_count)) + (Math.sqrt(tpScale(word.bg_count)) - Math.sqrt(tpScale(word.doc_count))) / 2)
+        .attr("stroke", "#000")
+        
+        .attr("fill", "none");
+    
+    label = element.append("h1")
+        .attr("title", word.key)
+        .style({
+            'font-size': "14px",
+            'font-weight': "normal",
+            margin: "0px",
+            padding: "0px",
+            color: "#226695"
+        })
+            .text(word.key);
+}
+
+function rectangle(element, li, word, data) {
+    'use strict';
+    var width = 140,
+        height = 40,
+    
+        propInside = word.doc_count / word.bg_count,
+        propTopic = word.doc_count / data.stats.count,
+
+        inScale = d3.scale.linear().range([1, width]).domain([0, 1]),
+        inColorScale = d3.scale.linear().range(["#d7191c", "#ffffbf", primary]).domain([0, 0.05, 1]),
+        
+        outScale = d3.scale.linear().range([1, width]).domain([1, word.bg_count]),
+        max = Math.max(data.stats.count, data.stats.maxBg_count),
+        
+        tpScale = d3.scale.linear().range([1, width]).domain([0, max]),
+        label,
+
+        
+        glyph = element.append("svg")
+            .attr("width", width)
+            .attr("height", height);
+    
+    glyph.append("rect")
+        .attr("height", 25)
+        .attr("width", width)
+        .attr("x", 0)
+        .attr("y", 5)
+        .attr("stroke", "#ccc")
+        .attr("fill", "white");
+    
+    glyph.append("rect")
+        .attr("height", 25)
+        .attr("width", tpScale(word.bg_count))
+        .attr("x", 0)
+        .attr("y", 5)
+        .attr("fill", inColorScale(propTopic));
+
+    glyph.append("rect")
+        .attr("height", 25)
+        .attr("width", tpScale(word.doc_count))
+        .attr("x", 0)
+        .attr("y", 5)
+        .attr("opacity", 0.5)
+        .attr("fill", "#ccc");
+    
+    
+    glyph.append("rect")
+        .attr("height", 5)
+        .attr("width", width)
+        .attr("x", 0)
+        .attr("y", 35)
+        .attr("stroke", "#ccc")
+        .attr("fill", "white");
+    
+    glyph.append("rect")
+        .attr("height", 5)
+        .attr("width", tpScale(data.stats.count))
+        .attr("x", 0)
+        .attr("y", 35)
+        .attr("fill", "#dbc8ae");
+    
+    
+    label = element.append("h1")
+        .attr("title", word.key)
+        .style({
+            'font-size': "14px",
+            'font-weight': "normal",
+            margin: "0px",
+            padding: "0px",
+            color: "#226695"
+        })
+            .text(word.key);
+}
 
 
 

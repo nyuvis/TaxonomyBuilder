@@ -52,7 +52,7 @@ txServices.factory('db', function (esFactory) {
                 "NAME": {
                     "significant_terms": {
                         "field": "text",
-                        "size": 100,
+                        "size": 50,
                         "exclude": exclude,
                         "gnd": {}
                     }
