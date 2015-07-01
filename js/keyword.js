@@ -75,16 +75,17 @@ function vennGlyph(element, li, word, data) {
             {sets: ['topic'], size: data.stats.count},
             {sets: ['word', 'topic'], size: word.doc_count}
         ],
-
+/*
         chart = venn.VennDiagram()
             .width(width)
             .height(width),
-        
+        */
         label;
-    
+    d3.areaProportionalVenn("#ffa700", "#168ce2", data.stats.count,  word.bg_count, word.doc_count, gliphy, Math.max(data.stats.maxBg_count, data.stats.count));
+    /*
     gliphy.append("g")
         .attr("transform", "translate(0,0)")
-        .datum(sets).call(chart);
+        .datum(sets).call(chart);*/
 
     gliphy.append("path")
         .attr("class", "scoreArcBase")
