@@ -63,15 +63,19 @@ d3.areaProportionalVenn = function(color_1, color_2, circle_1_area, circle_2_are
         var post_translated=[r1, r2, found_distance];
 
         //create the graph
-        var graph=board;
+        start = cx1 - post_translated[0];
+        end = cx1 + post_translated[2] +  post_translated[1];
+        padding = (width - (end-start))/2 - 16;
+        var graph=board.append("g").attr("transform", "translate("+ padding +",0)");
         var Circle1Radius = [post_translated[0]];//how big is this circle?
 
         var Circle1 = graph.selectAll("circle1")
             .data(Circle1Radius)
             .enter()
             .append("circle")
-            .attr("opacity", 0.8)
+            .attr("fill-opacity", 0.30)
             .attr("fill", color_1)
+            .attr("stroke", "rgb(178, 178, 178)")
             .attr("cx", cx1)
             .attr("cy", cy)
             .attr("r", function(d)
@@ -86,8 +90,9 @@ d3.areaProportionalVenn = function(color_1, color_2, circle_1_area, circle_2_are
             .data(Circle2Radius)
             .enter()
             .append("circle")
-            .attr("opacity", 0.8)
+            .attr("fill-opacity", 0.40)
             .attr("fill", color_2)
+            .attr("stroke", "rgb(178, 178, 178)")
             .attr("cx", cx2)
             .attr("cy", cy)
             .attr("r", function(d)

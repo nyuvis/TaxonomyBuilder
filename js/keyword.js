@@ -81,7 +81,7 @@ function vennGlyph(element, li, word, data) {
             .height(width),
         */
         label;
-    d3.areaProportionalVenn("#ffa700", "#168ce2", data.stats.count,  word.bg_count, word.doc_count, gliphy, Math.max(data.stats.maxBg_count, data.stats.count));
+    d3.areaProportionalVenn("#168ce2", "rgb(255, 127, 14)", word.bg_count, data.stats.count,  word.doc_count, gliphy, Math.max(data.stats.maxBg_count, data.stats.count));
     /*
     gliphy.append("g")
         .attr("transform", "translate(0,0)")
